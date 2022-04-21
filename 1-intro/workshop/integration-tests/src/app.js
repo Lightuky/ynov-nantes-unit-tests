@@ -3,15 +3,15 @@ const app = express();
 const ItemService = require('./services/itemService');
 
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 
 app.get('/', async (req, res) => {
     try {
         const items = await ItemService.listItems();
-        res.render('index', { items });
+        res.render('index', {items});
     } catch (e) {
         console.log(e);
-        res.status(404).json({ msg: 'No items found' });
+        res.status(404).json({msg: 'No items found'});
     }
 });
 
@@ -21,7 +21,7 @@ app.post('/item/add', async (req, res) => {
         res.redirect('/');
     } catch (e) {
         console.log(e);
-        res.status(500).json({ msg: 'Item creation error' });
+        res.status(500).json({msg: 'Item creation error'});
     }
 });
 
