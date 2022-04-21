@@ -1,13 +1,15 @@
 <?php
 
-class TempTracker {
-    private $temps;
-    private $min_temp;
-    private $max_temp;
-    private $mean_temp;
-    private $uptodate_mean_temp;
+class TempTracker
+{
+    private array $temps;
+    private int $min_temp;
+    private int $max_temp;
+    private int $mean_temp;
+    private bool $uptodate_mean_temp;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->temps = [];
         $this->min_temp = -1;
         $this->max_temp = -1;
@@ -40,19 +42,22 @@ class TempTracker {
         $this->temps[] = $temp;
     }
 
-    public function get_min()
+    public function get_min(): int
     {
         return $this->min_temp;
     }
-    public function get_max()
+
+    public function get_max(): int
     {
         return $this->max_temp;
     }
-    public function get_temps()
+
+    public function get_temps(): array
     {
         return $this->temps;
     }
-    public function get_mean()
+
+    public function get_mean(): float|int
     {
         if ($this->uptodate_mean_temp) {
             return $this->mean_temp;
@@ -65,7 +70,7 @@ class TempTracker {
             $sum_of_temps = $sum_of_temps + $temp;
         }
 
-        # registrer this calculation to avoid to do it too often
+        # register this calculation to avoid doing it too often
         $this->mean_temp = $sum_of_temps / count($this->temps);
         $this->uptodate_mean_temp = true;
         return $this->mean_temp;
