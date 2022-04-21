@@ -4,7 +4,7 @@
 flatten function :
 flatten an array of arbitrarily nested arrays of integers into a flat array of integers. e.g. [[1,2,[3]],4] -> [1,2,3,4]
 
-idealy we should use numpy flatten method
+ideally we should use numpy flatten method
 https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.flatten.html
 
 """
