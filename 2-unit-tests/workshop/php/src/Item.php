@@ -9,17 +9,17 @@ final class Item
     /**
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * @var int
      */
-    public $sell_in;
+    public int $sell_in;
 
     /**
      * @var int
      */
-    public $quality;
+    public int $quality;
 
     public function __construct(string $name, int $sell_in, int $quality)
     {
