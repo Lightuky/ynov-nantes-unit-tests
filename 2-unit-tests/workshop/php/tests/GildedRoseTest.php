@@ -67,4 +67,21 @@ class GildedRoseTest extends TestCase
             $this->assertSame($item_values['expected_quality'], $backstage_passes[0]->quality);
         }
     }
+
+    public function testConjuredItemQualityDecrease(): void
+    {
+        $products_names = [
+            ["name" => "Conjured Item", "expected_quality" => 8],
+            ["name" => "ConjuredItem", "expected_quality" => 9],
+            ["name" => "item Conjured", "expected_quality" => 9],
+            ["name" => "itemConjured", "expected_quality" => 9],
+        ];
+
+        foreach ($products_names as $product_name) {
+            $conjured_item = [new Item($product_name['name'], 7, 10),];
+            $gildedRose = new GildedRose($conjured_item);
+            $gildedRose->updateQuality();
+            $this->assertSame($product_name['expected_quality'], $conjured_item[0]->quality);
+        }
+    }
 }

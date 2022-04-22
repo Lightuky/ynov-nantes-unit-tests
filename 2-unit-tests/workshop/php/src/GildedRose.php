@@ -22,7 +22,11 @@ final class GildedRose
             if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
                 if ($item->quality > 0) {
                     if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                        $item->quality = $item->quality - 1;
+                        if (str_starts_with(strtolower($item->name), 'conjured ')) {
+                            $item->quality = $item->quality - 2;
+                        } else {
+                            $item->quality = $item->quality - 1;
+                        }
                     }
                 }
             } else {
