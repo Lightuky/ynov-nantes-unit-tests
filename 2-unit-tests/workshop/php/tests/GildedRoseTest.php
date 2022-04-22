@@ -4,12 +4,51 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use ArgumentCountError;
 use GildedRose\GildedRose;
 use GildedRose\Item;
+use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 
 class GildedRoseTest extends TestCase
 {
+    public function testNoItems(): void
+    {
+        $this->expectException(ArgumentCountError::class);
+        $gildedRose = new GildedRose();
+        $gildedRose->updateQuality();
+    }
+
+    public function testMissingAttributes(): void
+    {
+        $this->expectException(ArgumentCountError::class);
+        $incomplete_items = [
+            new Item(name: 'Missing Attribute Item 1', sell_in: 5),
+            new Item(sell_in: 5, quality: 14),
+            new Item(quality: 8),
+            new Item(),
+        ];
+        $gildedRose = new GildedRose($incomplete_items);
+        $gildedRose->updateQuality();
+    }
+
+    public function testNormalAttributesDecrease(): void
+    {
+        $items_data = [
+            ["sell_in" => 5, "quality" => 10],
+            ["sell_in" => 10, "quality" => 9],
+            ["sell_in" => 7, "quality" => 8],
+            ["sell_in" => 9, "quality" => 7],
+        ];
+        foreach ($items_data as $item_data) {
+            $item = [new Item("Item", $item_data['sell_in'], $item_data['quality'])];
+            $gildedRose = new GildedRose($item);
+            $gildedRose->updateQuality();
+            $this->assertSame($item_data['quality'] - 1, $item[0]->quality);
+            $this->assertSame($item_data['sell_in'] - 1, $item[0]->sell_in);
+        }
+    }
+
     public function testExpiredItemQualityDrop(): void
     {
         $expired_item = [new Item('Expired', -1, 5)];
