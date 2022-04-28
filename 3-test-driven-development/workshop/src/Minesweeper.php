@@ -20,6 +20,7 @@ final class Minesweeper
 
     public function createMinesweeper()
     {
+        $boards = [];
         foreach ($this->fields as $field) {
             if ($field->linesCount == 0 && $field->columnsCount == 0) {
                 break;
@@ -39,8 +40,21 @@ final class Minesweeper
                     $board[$i + 1] = substr($tileStr, $sliceLimit, $field->columnsCount);
                     $sliceLimit = $sliceLimit + $field->columnsCount;
                 }
-
+                $boards[] = $board;
             }
         }
+//        Debug non-formatted Boards :
+//        print_r($boards);
+//        die();
+        $this->formatTiles($boards);
+    }
+
+    public function formatTiles($boards)
+    {
+        foreach ($boards as  $key => $board) {
+            $boards[$key] = str_replace(".","0",$board);
+        }
+            var_dump($boards);
+        die();
     }
 }
