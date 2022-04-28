@@ -10,12 +10,12 @@ final class Field
 
     public int $columnsCount;
 
-    public array $body;
+    public int $bombsCount;
 
-    public function __construct(int $linesCount, int $columnsCount, array $body)
+    public function __construct(int $linesCount, int $columnsCount, int $bombsCount)
     {
         $this->linesCount = $linesCount;
         $this->columnsCount = $columnsCount;
-        $this->body = $body;
+        $this->bombsCount = $bombsCount;
     }
 }
