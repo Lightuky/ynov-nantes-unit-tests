@@ -43,22 +43,94 @@ final class Minesweeper
                 $boards[] = $board;
             }
         }
-//        Debug non-formatted Boards :
-//        print_r($boards);
-//        die();
-        return $this->formatTiles($boards);
+//      Debug non-formatted Boards :
+//      print_r($boards);
+//      die();
+
+        $formattedBoards = $this->formatTiles($boards);
+        print_r($formattedBoards);
+        die();
+        return $formattedBoards;
     }
 
     public function formatTiles($boards): array
     {
-        $formattedBoards = [];
-        foreach ($boards as $key => $board) {
-            $board = str_replace(".", "0", $board);
-            $board[0] = "Field #" . $key . ":";
-            $formattedBoards[] = $board;
+        foreach ($boards as $boardIndex => $board) {
+            foreach ($board as $lineIndex => $line) {
+                if ($lineIndex == 0) {
+                    $line = "Field #" . $boardIndex + 1 . ":";
+                } else {
+                    $line = str_replace(".", "0", $line);
+                    $line = str_split($line);
+                }
+                $boards[$boardIndex][$lineIndex] = $line;
+            }
         }
-        print_r($formattedBoards);
+
+//      Debug formatted but not bomb-numbered Boards :
+//      print_r($boards);
+//      die();
+
+        return $this->countBombs($boards);
+    }
+
+    public function countBombs($boards): array
+    {
+        foreach ($boards as $boardIndex => $board) {
+            foreach ($board as $lineIndex => $line) if ($lineIndex != 0) {
+                foreach ($line as $charIndex => $char) {
+                    if ($char != "*") {
+                        $char = intval($char);
+                        // Check left tile
+                        if (array_key_exists($charIndex - 1, $line) && $line[$charIndex - 1] == "*") {
+                            $char++;
+                        }
+                        // Check right tile
+                        if (array_key_exists($charIndex + 1, $line) && $line[$charIndex + 1] == "*") {
+                            $char++;
+                        }
+                        // Check down tile
+                        if (array_key_exists($lineIndex - 1, $board) && $board[$lineIndex - 1][$charIndex] == "*") {
+                            $char++;
+                        }
+                        // Check up tile
+                        if (array_key_exists($lineIndex + 1, $board) && $board[$lineIndex + 1][$charIndex] == "*") {
+                            $char++;
+                        }
+//
+//                        // Check down-left tile
+//                        if ($lineIndex > 1 && array_key_exists($lineIndex - 1, $board) && array_key_exists($charIndex - 1, $board[$lineIndex--]) && $board[$lineIndex - 1][$charIndex - 1] == "*") {
+//                            $char++;
+//                        }
+//                        // Check down-right tile
+//                        if ($lineIndex > 1 && array_key_exists($lineIndex - 1, $board) && array_key_exists($charIndex + 1, $board[$lineIndex--]) && $board[$lineIndex - 1][$charIndex + 1] == "*") {
+//                            $char++;
+//                        }
+//                        // Check up-left tile
+//                        if (array_key_exists($lineIndex + 1, $board)) {
+//                            if (array_key_exists($charIndex - 1, $board[$lineIndex++]) && $board[$lineIndex + 1][$charIndex - 1] == "*") {
+//                                $char++;
+//                            }
+//                        }
+//                        // Check up-right tile
+//                        if (array_key_exists($lineIndex + 1, $board) && $lineIndex + 1 <= count($board) && $charIndex + 1 <= count($line)) {
+//                            if (array_key_exists($charIndex + 1, $board[$lineIndex++])) {
+//                                if ($board[$lineIndex + 1][$charIndex + 1] == "*") {
+//                                    $char++;
+//                                }
+//                            }
+//                        }
+                    }
+                    print_r(" $char ");
+                }
+                print_r("\n");
+                $boards[$boardIndex][$lineIndex] = implode($line);
+            }
+            print_r("\n");
+        }
+
+        // print_r($boards);
         die();
-        return $formattedBoards;
+        return $boards;
     }
 }
