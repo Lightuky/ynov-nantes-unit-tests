@@ -18,7 +18,7 @@ final class Minesweeper
         $this->fields = $fields;
     }
 
-    public function createMinesweeper()
+    public function createMinesweeper(): array
     {
         $boards = [];
         foreach ($this->fields as $field) {
@@ -46,15 +46,19 @@ final class Minesweeper
 //        Debug non-formatted Boards :
 //        print_r($boards);
 //        die();
-        $this->formatTiles($boards);
+        return $this->formatTiles($boards);
     }
 
-    public function formatTiles($boards)
+    public function formatTiles($boards): array
     {
-        foreach ($boards as  $key => $board) {
-            $boards[$key] = str_replace(".","0",$board);
+        $formattedBoards = [];
+        foreach ($boards as $key => $board) {
+            $board = str_replace(".", "0", $board);
+            $board[0] = "Field #" . $key . ":";
+            $formattedBoards[] = $board;
         }
-            var_dump($boards);
+        print_r($formattedBoards);
         die();
+        return $formattedBoards;
     }
 }
